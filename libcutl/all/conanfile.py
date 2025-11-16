@@ -10,7 +10,6 @@ import re
 
 required_conan_version = ">=1.52.0"
 
-
 def encode_version(version_str):
     # Parse version: major.minor.patch(-pre)
     match = re.match(r"(\d+)\.(\d+)\.(\d+)(?:-([ab])\.(\d+)(?:\.z)?)?", version_str)

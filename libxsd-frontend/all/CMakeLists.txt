@@ -6,4 +6,5 @@ find_package(libcutl CONFIG REQUIRED)
 
 message("Generate libxsd-frontend from sources at ${LIBXSD_FRONTEND_PATH}")
 
+include(${PROJECT_SOURCE_DIR}/cmake/libxsd-frontend_autotools.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/libxsd-frontend.cmake)

@@ -1,0 +1,42 @@
+diff --git a/libxsd-frontend/version.hxx.in b/libxsd-frontend/version.hxx.in
+index c22ca4e..bab37ac 100644
+--- a/libxsd-frontend/version.hxx.in
++++ b/libxsd-frontend/version.hxx.in
+@@ -22,19 +22,19 @@
+ // 3.0.0-b.2    0000299999999995020
+ // 2.2.0-a.1.z  0000200001999990011
+ //
+-#define LIBXSD_FRONTEND_VERSION       $libxsd_frontend.version.project_number$ULL
+-#define LIBXSD_FRONTEND_VERSION_STR   "$libxsd_frontend.version.project$"
+-#define LIBXSD_FRONTEND_VERSION_ID    "$libxsd_frontend.version.project_id$"
+-#define LIBXSD_FRONTEND_VERSION_FULL  "$libxsd_frontend.version$"
++#cmakedefine LIBXSD_FRONTEND_VERSION       @LIBXSD_FRONTEND_VERSION@
++#cmakedefine LIBXSD_FRONTEND_VERSION_STR   "@LIBXSD_FRONTEND_VERSION_STR@"
++#cmakedefine LIBXSD_FRONTEND_VERSION_ID    "@LIBXSD_FRONTEND_VERSION_ID@"
++#cmakedefine LIBXSD_FRONTEND_VERSION_FULL  "@LIBXSD_FRONTEND_VERSION_FULL@"
+ 
+-#define LIBXSD_FRONTEND_VERSION_MAJOR $libxsd_frontend.version.major$
+-#define LIBXSD_FRONTEND_VERSION_MINOR $libxsd_frontend.version.minor$
+-#define LIBXSD_FRONTEND_VERSION_PATCH $libxsd_frontend.version.patch$
++#define LIBXSD_FRONTEND_VERSION_MAJOR ${LIBXSD_FRONTEND_VERSION_MAJOR}
++#define LIBXSD_FRONTEND_VERSION_MINOR ${LIBXSD_FRONTEND_VERSION_MINOR}
++#define LIBXSD_FRONTEND_VERSION_PATCH ${LIBXSD_FRONTEND_VERSION_PATCH}
+ 
+-#define LIBXSD_FRONTEND_PRE_RELEASE   $libxsd_frontend.version.pre_release$
++#cmakedefine LIBXSD_FRONTEND_PRE_RELEASE   @LIBXSD_FRONTEND_PRE_RELEASE@
+ 
+-#define LIBXSD_FRONTEND_SNAPSHOT      $libxsd_frontend.version.snapshot_sn$ULL
+-#define LIBXSD_FRONTEND_SNAPSHOT_ID   "$libxsd_frontend.version.snapshot_id$"
++#cmakedefine LIBXSD_FRONTEND_SNAPSHOT      @LIBXSD_FRONTEND_SNAPSHOT@
++#cmakedefine LIBXSD_FRONTEND_SNAPSHOT_ID   "@LIBXSD_FRONTEND_SNAPSHOT_ID@"
+ 
+ #include <xercesc/util/XercesVersion.hpp>
+ 
+@@ -46,6 +46,6 @@
+ 
+ #include <libcutl/version.hxx>
+ 
+-$libcutl.check(LIBCUTL_VERSION, LIBCUTL_SNAPSHOT)$
++//$libcutl.check(LIBCUTL_VERSION, LIBCUTL_SNAPSHOT)$
+ 
+ #endif // LIBXSD_FRONTEND_VERSION

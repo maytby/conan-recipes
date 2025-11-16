@@ -1,16 +1,14 @@
 import os
+import re
 
 from conan import ConanFile
-from conan.errors import ConanInvalidConfiguration
-from conan.tools.build import check_min_cppstd,check_max_cppstd
-from conan.tools.files import apply_conandata_patches, chdir, copy, export_conandata_patches, get, rmdir
+from conan.tools.build import check_min_cppstd
 from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
-
+from conan.tools.files import apply_conandata_patches, copy, export_conandata_patches, get
+from conan.tools.scm import Git
 from conan.tools.scm import Version  # Conan >= 2.x
 
 required_conan_version = ">=2"
-
-import re
 
 def encode_version(version_str):
     # Parse version: major.minor.patch(-pre)
@@ -64,8 +62,8 @@ class ConanXqilla(ConanFile):
 
     def requirements(self):
         self.requires("xerces-c/[>=3.0.0]")
-        self.requires("libcutl/[>=1.8]")
-        self.requires("libxsd-frontend/2.0.0")
+        self.requires("libcutl/1.11.0")
+        self.requires("libxsd-frontend/2.1.0")
         
     def build_requirements(self):
         self.tool_requires("cmake/[>3 <4]")
@@ -75,27 +73,43 @@ class ConanXqilla(ConanFile):
 
     def validate(self):
         if self.settings.compiler.cppstd:
-            check_min_cppstd(self, 11)
-            check_max_cppstd(self, 14)
+            check_min_cppstd(self, 17)
 
     def source(self):
-        get(self, **self.conan_data["sources"][self.version], strip_root=True)
+        src = self.conan_data["sources"][self.version]
+        if "git_url" in src:
+            # git checkout with tag
+            git = Git(self)
+            git.clone(url=src['git_url'], target=".")
+            if "git_tag" in src:
+                git.checkout(src['git_tag'])
+        else:
+            get(self, **self.conan_data["sources"][self.version], strip_root=True)
 
     def layout(self):
         cmake_layout(self, src_folder="src")
-        
+
+
+    def _license(self):
+        with open(os.path.join(self.source_folder, 'LICENSE'), "r") as f:
+            file_contents = f.read()
+            return file_contents
+
     def generate(self):
         toolchain = CMakeToolchain(self)
         toolchain.variables["XSD_PATH"] = self.source_folder.replace("\\", "/")
         v = Version(self.version)
-        toolchain.variables["XSD_VERSION"] = encode_version(self.version)
-        toolchain.variables["XSD_VERSION_STR"] = self.version
-        toolchain.variables["XSD_VERSION_ID"] = self.version
-        toolchain.variables["XSD_VERSION_FULL"] = self.version
-        toolchain.variables["XSD_VERSION_MAJOR"] = v.major
-        toolchain.variables["XSD_VERSION_MINOR"] = v.minor
-        toolchain.variables["XSD_VERSION_PATCH"] = v.patch
-        toolchain.variables["XSD_COPYRIGHT"] = "2025"
+        for template in ["LIBXSD", "XSD"]:
+            toolchain.variables[f"${template}_VERSION"] = encode_version(self.version)
+            toolchain.variables[f"${template}_VERSION_STR"] = self.version
+            toolchain.variables[f"${template}_VERSION_ID"] = self.version
+            toolchain.variables[f"${template}_VERSION_FULL"] = self.version
+            toolchain.variables[f"${template}_VERSION_MAJOR"] = v.major
+            toolchain.variables[f"${template}_VERSION_MINOR"] = v.minor
+            toolchain.variables[f"${template}_VERSION_PATCH"] = v.patch
+        lic: str = self._license()
+        print(lic)
+        toolchain.variables["XSD_COPYRIGHT"] = "TODO"
         toolchain.generate()
 
         deps = CMakeDeps(self)
@@ -120,7 +134,8 @@ class ConanXqilla(ConanFile):
         self.cpp_info.resdirs = []
         self.cpp_info.includedirs = []
 
-        # TODO: to remove in conan v2
         bin_path = os.path.join(self.package_folder, "bin")
-        self.output.info(f"Appending PATH environment variable: {bin_path}")
-        self.env_info.path.append(bin_path)
+        # for runtime
+        self.runenv_info.prepend_path("PATH", bin_path)
+        # for build tools
+        self.buildenv_info.prepend_path("PATH", bin_path)

@@ -1,7 +1,7 @@
 sources:
   "4.2.0":
-    git_url: "https://codesynthesis.com/download/xsd/4.2/xsd-4.2.0.tar.gz"
-    git_tag: "2bed17c601cfb984f9a7501fd5c672f4f18eac678f5bdef6016971966add9145"
+    git_url: "git://git.codesynthesis.com/xsd/xsd.git"
+    git_tag: "v4.2.0"
 patches:
   "4.2.0":
-    - patch_file: "patches/0003-autoconfigure.patch"
+    - patch_file: "patches/0001-templating.patch"

@@ -1,0 +1,207 @@
+Subject: [PATCH] cutl from conan
+---
+Index: src/xsd/cxx/parser/generator.cxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/xsd/cxx/parser/generator.cxx b/xsd/cxx/parser/generator.cxx
+--- a/xsd/cxx/parser/generator.cxx	(revision 1eff9d736c72d1a65bd81864409ae78d5a97a5ef)
++++ b/xsd/cxx/parser/generator.cxx	(date 1763238469772)
+@@ -5,11 +5,11 @@
+ #include <iostream>
+ #include <fstream>
+ 
+-#include <libcutl/re.hxx>
++#include <cutl/re.hxx>
+ 
+-#include <libcutl/compiler/code-stream.hxx>
+-#include <libcutl/compiler/cxx-indenter.hxx>
+-#include <libcutl/compiler/sloc-counter.hxx>
++#include <cutl/compiler/code-stream.hxx>
++#include <cutl/compiler/cxx-indenter.hxx>
++#include <cutl/compiler/sloc-counter.hxx>
+ 
+ #include <libxsd-frontend/semantic-graph.hxx>
+ 
+Index: src/xsd/cxx/tree/elements.hxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/xsd/cxx/tree/elements.hxx b/xsd/cxx/tree/elements.hxx
+--- a/xsd/cxx/tree/elements.hxx	(revision 1eff9d736c72d1a65bd81864409ae78d5a97a5ef)
++++ b/xsd/cxx/tree/elements.hxx	(date 1763238469777)
+@@ -10,7 +10,7 @@
+ #include <vector>
+ #include <sstream>
+ 
+-#include <libcutl/re.hxx>
++#include <cutl/re.hxx>
+ 
+ #include <xsd/types.hxx>
+ 
+Index: src/xsd/cxx/tree/name-processor.cxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/xsd/cxx/tree/name-processor.cxx b/xsd/cxx/tree/name-processor.cxx
+--- a/xsd/cxx/tree/name-processor.cxx	(revision 1eff9d736c72d1a65bd81864409ae78d5a97a5ef)
++++ b/xsd/cxx/tree/name-processor.cxx	(date 1763238469764)
+@@ -7,7 +7,7 @@
+ #include <sstream>
+ #include <iostream>
+ 
+-#include <libcutl/re.hxx>
++#include <cutl/re.hxx>
+ 
+ #include <xsd/cxx/tree/default-value.hxx>
+ #include <xsd/cxx/tree/name-processor.hxx>
+Index: src/xsd/xsd.cxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/xsd/xsd.cxx b/xsd/xsd.cxx
+--- a/xsd/xsd.cxx	(revision 1eff9d736c72d1a65bd81864409ae78d5a97a5ef)
++++ b/xsd/xsd.cxx	(date 1763238469780)
+@@ -10,7 +10,7 @@
+ 
+ #include <xercesc/util/PlatformUtils.hpp>
+ 
+-#include <libcutl/re.hxx>
++#include <cutl/re.hxx>
+ 
+ #include <libxsd-frontend/parser.hxx>
+ #include <libxsd-frontend/transformations/anonymous.hxx>
+Index: src/xsd/cxx/tree/generator.cxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/xsd/cxx/tree/generator.cxx b/xsd/cxx/tree/generator.cxx
+--- a/xsd/cxx/tree/generator.cxx	(revision 1eff9d736c72d1a65bd81864409ae78d5a97a5ef)
++++ b/xsd/cxx/tree/generator.cxx	(date 1763238469773)
+@@ -6,12 +6,12 @@
+ #include <iostream>
+ #include <fstream>
+ 
+-#include <libcutl/re.hxx>
+-#include <libcutl/shared-ptr.hxx>
++#include <cutl/re.hxx>
++#include <cutl/shared-ptr.hxx>
+ 
+-#include <libcutl/compiler/code-stream.hxx>
+-#include <libcutl/compiler/cxx-indenter.hxx>
+-#include <libcutl/compiler/sloc-counter.hxx>
++#include <cutl/compiler/code-stream.hxx>
++#include <cutl/compiler/cxx-indenter.hxx>
++#include <cutl/compiler/sloc-counter.hxx>
+ 
+ #include <libxsd-frontend/semantic-graph.hxx>
+ #include <libxsd-frontend/generators/dependencies.hxx>
+Index: src/xsd/version.hxx.in
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/xsd/version.hxx.in b/xsd/version.hxx.in
+--- a/xsd/version.hxx.in	(revision 1eff9d736c72d1a65bd81864409ae78d5a97a5ef)
++++ b/xsd/version.hxx.in	(date 1763238469765)
+@@ -44,7 +44,7 @@
+ #  error Xerces-C++ 2-series is not supported
+ #endif
+ 
+-#include <libcutl/version.hxx>
++#include <cutl/version.hxx>
+ 
+ $libcutl.check(LIBCUTL_VERSION, LIBCUTL_SNAPSHOT)$
+ 
+Index: src/xsd/type-map/type-map.hxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/xsd/type-map/type-map.hxx b/xsd/type-map/type-map.hxx
+--- a/xsd/type-map/type-map.hxx	(revision 1eff9d736c72d1a65bd81864409ae78d5a97a5ef)
++++ b/xsd/type-map/type-map.hxx	(date 1763238469770)
+@@ -6,7 +6,7 @@
+ 
+ #include <vector>
+ 
+-#include <libcutl/re.hxx>
++#include <cutl/re.hxx>
+ 
+ #include <xsd/types.hxx>
+ 
+Index: src/xsd/type-map/parser.cxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/xsd/type-map/parser.cxx b/xsd/type-map/parser.cxx
+--- a/xsd/type-map/parser.cxx	(revision 1eff9d736c72d1a65bd81864409ae78d5a97a5ef)
++++ b/xsd/type-map/parser.cxx	(date 1763238469775)
+@@ -3,7 +3,7 @@
+ 
+ #include <iostream>
+ 
+-#include <libcutl/re.hxx>
++#include <cutl/re.hxx>
+ 
+ #include <xsd/type-map/parser.hxx>
+ 
+Index: src/xsd/xsd.hxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/xsd/xsd.hxx b/xsd/xsd.hxx
+--- a/xsd/xsd.hxx	(revision 1eff9d736c72d1a65bd81864409ae78d5a97a5ef)
++++ b/xsd/xsd.hxx	(date 1763238469768)
+@@ -8,8 +8,8 @@
+ #include <vector>
+ #include <cstdio> // std::remove
+ 
+-#include <libcutl/shared-ptr.hxx>
+-#include <libcutl/fs/auto-remove.hxx>
++#include <cutl/shared-ptr.hxx>
++#include <cutl/fs/auto-remove.hxx>
+ 
+ #include <libxsd-frontend/semantic-graph/elements.hxx> // Path
+ 
+Index: src/xsd/cxx/parser/elements.hxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/xsd/cxx/parser/elements.hxx b/xsd/cxx/parser/elements.hxx
+--- a/xsd/cxx/parser/elements.hxx	(revision 1eff9d736c72d1a65bd81864409ae78d5a97a5ef)
++++ b/xsd/cxx/parser/elements.hxx	(date 1763238469767)
+@@ -6,7 +6,7 @@
+ 
+ #include <sstream>
+ 
+-#include <libcutl/re.hxx>
++#include <cutl/re.hxx>
+ 
+ #include <xsd/types.hxx>
+ 
+Index: src/xsd/cxx/elements.hxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/xsd/cxx/elements.hxx b/xsd/cxx/elements.hxx
+--- a/xsd/cxx/elements.hxx	(revision 1eff9d736c72d1a65bd81864409ae78d5a97a5ef)
++++ b/xsd/cxx/elements.hxx	(date 1763238469778)
+@@ -9,7 +9,7 @@
+ #include <vector>
+ #include <ostream>
+ 
+-#include <libcutl/re.hxx>
++#include <cutl/re.hxx>
+ 
+ #include <libxsd-frontend/semantic-graph.hxx>
+ #include <libxsd-frontend/traversal.hxx>

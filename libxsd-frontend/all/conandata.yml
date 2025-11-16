@@ -1,0 +1,8 @@
+sources:
+  "2.0.0":
+    url: "https://www.codesynthesis.com/download/libxsd-frontend/2.0/libxsd-frontend-2.0.0.tar.bz2"
+    sha256: "35ba30988c67bc4ce9278d869ec0a04305eabf55287456af34c66ebe3564bfda"
+patches:
+  "2.0.0":
+    - patch_file: "patches/0001-abstract_p.patch"
+    - patch_file: "patches/0002-windows-strings.patch"

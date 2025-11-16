@@ -1,0 +1,22 @@
+ GNU nano 8.7                                                                                                                                             schema.patch                                                                                                                                                        
+diff --git a/xsd-frontend/transformations/schema-per-type.cxx b/xsd-frontend/transformations/schema-per-type.cxx
+index 2fc14b5..c8ac6b8 100644
+--- a/xsd-frontend/transformations/schema-per-type.cxx
++++ b/xsd-frontend/transformations/schema-per-type.cxx
+@@ -2,7 +2,14 @@
+ // copyright : Copyright (c) 2006-2014 Code Synthesis Tools CC
+ // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
+
+-#include <strings.h> // strcasecmp
++#if defined(_WIN32) || defined(_WIN64)
++#  include <string.h>
++#  define strcasecmp _stricmp
++#  define strncasecmp _strnicmp
++#else
++#  include <strings.h>
++#endif
++
+
+ #include <map>
+ #include <set>
+

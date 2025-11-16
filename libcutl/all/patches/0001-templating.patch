@@ -1,0 +1,31 @@
+diff --git a/libcutl/version.hxx.in b/libcutl/version.hxx.in
+index 1edede7..a4c1e28 100644
+--- a/libcutl/version.hxx.in
++++ b/libcutl/version.hxx.in
+@@ -22,17 +22,17 @@
+ // 3.0.0-b.2    0000299999999995020
+ // 2.2.0-a.1.z  0000200001999990011
+ //
+-#define LIBCUTL_VERSION       $libcutl.version.project_number$ULL
+-#define LIBCUTL_VERSION_STR   "$libcutl.version.project$"
+-#define LIBCUTL_VERSION_ID    "$libcutl.version.project_id$"
++#cmakedefine LIBCUTL_VERSION       @LIBCUTL_VERSION@
++#cmakedefine LIBCUTL_VERSION_STR   "@LIBCUTL_VERSION_STR@"
++#cmakedefine LIBCUTL_VERSION_ID    "@LIBCUTL_VERSION_ID@"
+
+-#define LIBCUTL_VERSION_MAJOR $libcutl.version.major$
+-#define LIBCUTL_VERSION_MINOR $libcutl.version.minor$
+-#define LIBCUTL_VERSION_PATCH $libcutl.version.patch$
++#define LIBCUTL_VERSION_MAJOR ${LIBCUTL_VERSION_MAJOR}
++#define LIBCUTL_VERSION_MINOR ${LIBCUTL_VERSION_MINOR}
++#define LIBCUTL_VERSION_PATCH ${LIBCUTL_VERSION_PATCH}
+
+-#define LIBCUTL_PRE_RELEASE   $libcutl.version.pre_release$
++#cmakedefine LIBCUTL_PRE_RELEASE   @LIBCUTL_PRE_RELEASE@
+
+-#define LIBCUTL_SNAPSHOT      $libcutl.version.snapshot_sn$ULL
+-#define LIBCUTL_SNAPSHOT_ID   "$libcutl.version.snapshot_id$"
++#cmakedefine LIBCUTL_SNAPSHOT      @LIBCUTL_SNAPSHOT@
++#cmakedefine LIBCUTL_SNAPSHOT_ID   "@LIBCUTL_SNAPSHOT_ID@"
+
+ #endif // LIBCUTL_VERSION

@@ -4,7 +4,7 @@ import re
 from conan import ConanFile
 from conan.tools.build import check_min_cppstd
 from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
-from conan.tools.files import apply_conandata_patches, copy, export_conandata_patches, get
+from conan.tools.files import apply_conandata_patches, copy, export_conandata_patches, get, collect_libs, replace_in_file
 from conan.tools.scm import Git
 from conan.tools.scm import Version  # Conan >= 2.x
 
@@ -52,7 +52,7 @@ class ConanXqilla(ConanFile):
     homepage = "https://codesynthesis.com/projects/xsd/"
     topics = ("xml", "c++")
 
-    package_type = "application"
+    package_type = "header-library"
     settings = "os", "arch", "compiler", "build_type"
 
     def export_sources(self):
@@ -89,12 +89,6 @@ class ConanXqilla(ConanFile):
     def layout(self):
         cmake_layout(self, src_folder="src")
 
-
-    def _license(self):
-        with open(os.path.join(self.source_folder, 'LICENSE'), "r") as f:
-            file_contents = f.read()
-            return file_contents
-
     def generate(self):
         toolchain = CMakeToolchain(self)
         toolchain.variables["XSD_PATH"] = self.source_folder.replace("\\", "/")
@@ -107,9 +101,7 @@ class ConanXqilla(ConanFile):
             toolchain.variables[f"${template}_VERSION_MAJOR"] = v.major
             toolchain.variables[f"${template}_VERSION_MINOR"] = v.minor
             toolchain.variables[f"${template}_VERSION_PATCH"] = v.patch
-        lic: str = self._license()
-        print(lic)
-        toolchain.variables["XSD_COPYRIGHT"] = "TODO"
+        toolchain.variables["XSD_COPYRIGHT"] = "2005-2023"
         toolchain.generate()
 
         deps = CMakeDeps(self)
@@ -129,10 +121,9 @@ class ConanXqilla(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.frameworkdirs = []
-        self.cpp_info.libdirs = []
-        self.cpp_info.resdirs = []
-        self.cpp_info.includedirs = []
+        self.cpp_info.includedirs = ["include/libxsd"]
+        self.cpp_info.bindirs = ["bin"]
+        self.cpp_info.libs = []
 
         bin_path = os.path.join(self.package_folder, "bin")
         # for runtime

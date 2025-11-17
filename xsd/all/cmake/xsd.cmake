@@ -8,7 +8,13 @@ file(COPY ${XSD_PATH}/xsd/xsd/pregenerated/xsd DESTINATION ${XSD_PATH}/xsd/)
 file(REMOVE_RECURSE ${XSD_PATH}/xsd/xsd/pregenerated/)
 
 # get sources to compile
-file(GLOB_RECURSE SRCS_XSD ${XSD_PATH}/xsd/*.cxx)
+file(GLOB_RECURSE SRCS_XSD ${XSD_PATH}/xsd/*cxx)
+# get libxsd headers
+file(GLOB_RECURSE HDRS_LIBXSD
+    "${XSD_PATH}/libxsd/xsd/*.hxx"
+    "${XSD_PATH}/libxsd/xsd/*.txx"
+    "${XSD_PATH}/libxsd/xsd/*.ixx"
+)
 
 add_executable(xsd ${SRCS_XSD})
 
@@ -31,4 +37,9 @@ install(TARGETS xsd
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
+foreach ( file ${HDRS_LIBXSD} )
+    file(RELATIVE_PATH REL_PATH "${XSD_PATH}" "${file}")# Strip the filename to get only the directory
+    get_filename_component(REL_DIR "${REL_PATH}" DIRECTORY)
+    install( FILES ${file} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${REL_DIR}" )
+endforeach()
 

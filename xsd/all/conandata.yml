@@ -1,6 +1,6 @@
 sources:
   "4.2.0":
-    git_url: "git://git.codesynthesis.com/xsd/xsd.git"
+    git_url: "https://git.codesynthesis.com/xsd/xsd.git"
     git_tag: "v4.2.0"
 patches:
   "4.2.0":

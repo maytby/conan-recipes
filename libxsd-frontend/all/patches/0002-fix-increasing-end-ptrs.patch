@@ -1,0 +1,67 @@
+Subject: [PATCH] end of list fixed
+---
+Index: libxsd-frontend/semantic-graph/elements.hxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/libxsd-frontend/semantic-graph/elements.hxx b/libxsd-frontend/semantic-graph/elements.hxx
+--- a/libxsd-frontend/semantic-graph/elements.hxx	(revision 3ec78d3cdef0b2e77433ae812c4eb5f6de89c3bf)
++++ b/libxsd-frontend/semantic-graph/elements.hxx	(date 1763389888822)
+@@ -398,6 +398,8 @@
+         {
+           if (*i == &e)
+             i = j->second.erase (i);
++          if (i == j->second.end())
++            break;
+         }
+       }
+ 
+Index: libxsd-frontend/parser.cxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/libxsd-frontend/parser.cxx b/libxsd-frontend/parser.cxx
+--- a/libxsd-frontend/parser.cxx	(revision 3ec78d3cdef0b2e77433ae812c4eb5f6de89c3bf)
++++ b/libxsd-frontend/parser.cxx	(date 1763388992761)
+@@ -1065,7 +1065,8 @@
+ 
+             NodeArgs<Scope, Scope::NamesIterator> na (scope, pos);
+             s_.new_edge<Names> (na, ec, e.name ());
+-            ++pos;
++            if (pos != scope.names_end())
++              ++pos;
+           }
+           else if (p.is_a<Any> ())
+           {
+@@ -1103,7 +1104,8 @@
+ 
+             NodeArgs<Scope, Scope::NamesIterator> na (scope, pos);
+             s_.new_edge<Names> (na, ac, os.str ());
+-            ++pos;
++            if (pos != scope.names_end())
++              ++pos;
+           }
+           else
+             assert (false);
+@@ -1196,7 +1198,8 @@
+ 
+               NodeArgs<Scope, Scope::NamesIterator> na (s, pos);
+               s_.new_edge<Names> (na, a, p->name ());
+-              ++pos;
++              if (pos != s.names_end())
++                ++pos;
+ 
+               if (p->qualified_p ())
+                 s_.new_edge<BelongsToNamespace> (a, p->namespace_ ());
+@@ -1265,7 +1268,8 @@
+ 
+               NodeArgs<Scope, Scope::NamesIterator> na (s, pos);
+               s_.new_edge<Names> (na, any, os.str ());
+-              ++pos;
++              if (pos != s.names_end())
++                ++pos;
+             }
+           }
+         }

@@ -1,9 +1,3 @@
-
-# Generate requested libraries:
-#   - xsd
-
-
-# C library
 file(GLOB_RECURSE SRCS_LIBXSD_FRONTEND ${LIBXSD_FRONTEND_PATH}/libxsd-frontend/*.cxx)
 file(GLOB_RECURSE LIBXSD_FRONTEND_HDRS
     "${LIBXSD_FRONTEND_PATH}/libxsd-frontend/*.h"
@@ -16,15 +10,15 @@ file(GLOB_RECURSE LIBXSD_FRONTEND_HDRS
 add_library(libxsd_frontend ${SRCS_LIBXSD_FRONTEND})
 
 if(BUILD_SHARED_LIBS)
-    target_compile_definitions(libxsd_frontend PUBLIC LIBXSD_FRONTEND_SHARED_BUILD=1)
+    target_compile_definitions(libxsd_frontend PRIVATE LIBXSD_FRONTEND_SHARED_BUILD=1)
 else()
-    target_compile_definitions(libxsd_frontend PUBLIC LIBXSD_FRONTEND_STATIC_BUILD=1)
+    target_compile_definitions(libxsd_frontend PRIVATE LIBXSD_FRONTEND_STATIC_BUILD=1)
 endif()
 
-target_include_directories(libxsd_frontend PRIVATE
+target_include_directories(libxsd_frontend PUBLIC
     ${LIBXSD_FRONTEND_PATH}/
 )
-target_link_libraries(libxsd_frontend PRIVATE
+target_link_libraries(libxsd_frontend PUBLIC
     XercesC::XercesC
     libcutl::libcutl
 )

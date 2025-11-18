@@ -1,8 +1,3 @@
-
-# Generate requested libraries:
-#   - libcutl
-
-
 file(GLOB_RECURSE LIBCUTL_SRCS ${LIBCUTL_PATH}/libcutl/*.cxx)
 file(GLOB_RECURSE LIBCUTL_C_SRCS ${LIBCUTL_PATH}/libcutl/*.c)
 file(GLOB_RECURSE LIBCUTL_MODULES 
@@ -18,9 +13,9 @@ file(GLOB_RECURSE LIBCUTL_HDRS
 add_library(cutl ${LIBCUTL_SRCS} ${LIBCUTL_C_SRCS} ${LIBCUTL_HDRS})
 
 if(BUILD_SHARED_LIBS)
-    target_compile_definitions(cutl PUBLIC LIBCUTL_SHARED_BUILD=1)
+    target_compile_definitions(cutl PRIVATE LIBCUTL_SHARED_BUILD=1)
 else()
-    target_compile_definitions(cutl PUBLIC LIBCUTL_STATIC_BUILD=1)
+    target_compile_definitions(cutl PRIVATE LIBCUTL_STATIC_BUILD=1)
 endif()
 
 target_include_directories(cutl PUBLIC

@@ -38,7 +38,7 @@ install(TARGETS xsd
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 foreach ( file ${HDRS_LIBXSD} )
-    file(RELATIVE_PATH REL_PATH "${XSD_PATH}" "${file}")# Strip the filename to get only the directory
+    file(RELATIVE_PATH REL_PATH "${XSD_PATH}/libxsd" "${file}")# Strip the filename to get only the directory
     get_filename_component(REL_DIR "${REL_PATH}" DIRECTORY)
     install( FILES ${file} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${REL_DIR}" )
 endforeach()

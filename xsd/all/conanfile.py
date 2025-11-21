@@ -94,13 +94,13 @@ class ConanXqilla(ConanFile):
         toolchain.variables["XSD_PATH"] = self.source_folder.replace("\\", "/")
         v = Version(self.version)
         for template in ["LIBXSD", "XSD"]:
-            toolchain.variables[f"${template}_VERSION"] = encode_version(self.version)
-            toolchain.variables[f"${template}_VERSION_STR"] = self.version
-            toolchain.variables[f"${template}_VERSION_ID"] = self.version
-            toolchain.variables[f"${template}_VERSION_FULL"] = self.version
-            toolchain.variables[f"${template}_VERSION_MAJOR"] = v.major
-            toolchain.variables[f"${template}_VERSION_MINOR"] = v.minor
-            toolchain.variables[f"${template}_VERSION_PATCH"] = v.patch
+            toolchain.variables[f"{template}_VERSION"] = encode_version(self.version)
+            toolchain.variables[f"{template}_VERSION_STR"] = self.version
+            toolchain.variables[f"{template}_VERSION_ID"] = self.version
+            toolchain.variables[f"{template}_VERSION_FULL"] = self.version
+            toolchain.variables[f"{template}_VERSION_MAJOR"] = v.major
+            toolchain.variables[f"{template}_VERSION_MINOR"] = v.minor
+            toolchain.variables[f"{template}_VERSION_PATCH"] = v.patch
         toolchain.variables["XSD_COPYRIGHT"] = "2005-2023"
         toolchain.generate()
 
@@ -121,7 +121,7 @@ class ConanXqilla(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.includedirs = ["include/libxsd"]
+        self.cpp_info.includedirs = ["include"]
         self.cpp_info.bindirs = ["bin"]
         self.cpp_info.libs = []
 

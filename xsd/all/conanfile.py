@@ -48,12 +48,19 @@ class ConanXqilla(ConanFile):
         "XSD supports two C++ mappings: in-memory C++/Tree and event-driven C++/Parser."
     )
     license = ("GPL-2.0", "FLOSSE")
-    url = "https://github.com/conan-io/conan-center-index"
+    url = "https://github.com/maytby/conan-recipes"
     homepage = "https://codesynthesis.com/projects/xsd/"
     topics = ("xml", "c++")
 
-    package_type = "header-library"
     settings = "os", "arch", "compiler", "build_type"
+    
+    options = {
+        "with_tools": [True, False]
+    }
+    
+    default_options = {
+        "with_tools": False
+    }
 
     def export_sources(self):
         export_conandata_patches(self)
@@ -102,6 +109,7 @@ class ConanXqilla(ConanFile):
             toolchain.variables[f"{template}_VERSION_MINOR"] = v.minor
             toolchain.variables[f"{template}_VERSION_PATCH"] = v.patch
         toolchain.variables["XSD_COPYRIGHT"] = "2005-2023"
+        toolchain.cache_variables["WITH_TOOLS"] = self.options.with_tools
         toolchain.generate()
 
         deps = CMakeDeps(self)
@@ -121,12 +129,10 @@ class ConanXqilla(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.includedirs = ["include"]
-        self.cpp_info.bindirs = ["bin"]
-        self.cpp_info.libs = []
-
-        bin_path = os.path.join(self.package_folder, "bin")
-        # for runtime
-        self.runenv_info.prepend_path("PATH", bin_path)
-        # for build tools
-        self.buildenv_info.prepend_path("PATH", bin_path)
+        self.cpp_info.libdirs = []
+        self.cpp_info.includedirs = []
+        if self.options.with_tools:
+            self.cpp_info.bindirs = ["bin"]
+            
+        # header component
+        self.cpp_info.components["libxsd"].includedirs = ["include"]

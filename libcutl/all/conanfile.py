@@ -46,10 +46,10 @@ class ConanLibCutl(ConanFile):
         "libcutl is a C++ utility library. It contains a collection of generic and independent components such as meta-programming tests, smart pointers, containers, compiler building blocks, etc."
     )
     license = ("MIT")
-    url = "https://github.com/conan-io/conan-center-index"
+    url = "https://github.com/maytby/conan-recipes"
     homepage = "https://www.codesynthesis.com/projects/libcutl/"
     topics = ("xml", "c++")
-
+    
     package_type = "library"
     settings = "os", "arch", "compiler", "build_type"
     

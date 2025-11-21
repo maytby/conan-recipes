@@ -47,7 +47,7 @@ class ConanLIBXSD(ConanFile):
         "libxsd-frontend is a compiler frontend for the W3C XML Schema definition language. It includes a parser, semantic graph types and a traversal mechanism."
     )
     license = ("GPLv2")
-    url = "https://github.com/conan-io/conan-center-index"
+    url = "https://github.com/maytby/conan-recipes"
     homepage = "https://www.codesynthesis.com/projects/libxsd-frontend/"
     topics = ("xml", "c++")
 

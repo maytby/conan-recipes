@@ -13,7 +13,7 @@ file(GLOB_RECURSE HDRS_LIBXSD
     "${XSD_PATH}/libxsd/xsd/*.ixx"
 )
 
-if(WITH_TOOLS)
+if(BUILD_TOOLS)
         # cop pregenerated stuff to actual build
         file(COPY ${XSD_PATH}/xsd/xsd/pregenerated/xsd DESTINATION ${XSD_PATH}/xsd/)
         file(REMOVE_RECURSE ${XSD_PATH}/xsd/xsd/pregenerated/)
@@ -44,9 +44,12 @@ if(WITH_TOOLS)
                 ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
         )
 endif()
-foreach ( file ${HDRS_LIBXSD} ${BUILD_HDRS_LIBXSD} )
-    file(RELATIVE_PATH REL_PATH "${XSD_PATH}/libxsd" "${file}")# Strip the filename to get only the directory
-    get_filename_component(REL_DIR "${REL_PATH}" DIRECTORY)
-    install( FILES ${file} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${REL_DIR}" )
-endforeach()
+
+if(COLLECT_HEADERS)
+        foreach ( file ${HDRS_LIBXSD} ${BUILD_HDRS_LIBXSD} )
+        file(RELATIVE_PATH REL_PATH "${XSD_PATH}/libxsd" "${file}")# Strip the filename to get only the directory
+        get_filename_component(REL_DIR "${REL_PATH}" DIRECTORY)
+        install( FILES ${file} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${REL_DIR}" )
+        endforeach()
+endif()
 

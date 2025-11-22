@@ -8,8 +8,6 @@ from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
 from conan.tools.scm import Git
 import re
 
-required_conan_version = ">=1.52.0"
-
 def encode_version(version_str):
     # Parse version: major.minor.patch(-pre)
     match = re.match(r"(\d+)\.(\d+)\.(\d+)(?:-([ab])\.(\d+)(?:\.z)?)?", version_str)
@@ -69,7 +67,7 @@ class ConanLibCutl(ConanFile):
         pass
         
     def build_requirements(self):
-        self.tool_requires("cmake/[>3.31 <4]")
+        self.tool_requires("cmake/[>=3.31]")
 
     def package_id(self):
         del self.info.settings.compiler
@@ -102,6 +100,9 @@ class ConanLibCutl(ConanFile):
         toolchain.variables["LIBCUTL_VERSION_MAJOR"] = v.major
         toolchain.variables["LIBCUTL_VERSION_MINOR"] = v.minor
         toolchain.variables["LIBCUTL_VERSION_PATCH"] = v.patch
+        toolchain.variables[f"LIBCUTL_PRE_RELEASE"] = "false"
+        toolchain.variables[f"LIBCUTL_SNAPSHOT"] = 0
+        toolchain.variables[f"LIBCUTL_SNAPSHOT_ID"] = ""
         toolchain.generate()
 
         deps = CMakeDeps(self)

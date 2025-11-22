@@ -8,8 +8,6 @@ from conan.tools.files import apply_conandata_patches, copy, export_conandata_pa
 from conan.tools.scm import Git
 from conan.tools.scm import Version  # Conan >= 2.x
 
-required_conan_version = ">=2"
-
 def encode_version(version_str):
     # Parse version: major.minor.patch(-pre)
     match = re.match(r"(\d+)\.(\d+)\.(\d+)(?:-([ab])\.(\d+)(?:\.z)?)?", version_str)
@@ -54,13 +52,14 @@ class ConanXqilla(ConanFile):
 
     settings = "os", "arch", "compiler", "build_type"
     
-    options = {
-        "with_tools": [True, False]
-    }
-    
-    default_options = {
-        "with_tools": False
-    }
+    def configure(self):
+        self.output.info(f"context: {self.context}")
+        if self.context == "host":
+            # used as simple requirement
+            self.package_type = "header-library"
+        elif self.context == "build":
+            # e.g. via tool_requires
+            self.package_type = "application"
 
     def export_sources(self):
         export_conandata_patches(self)
@@ -73,7 +72,7 @@ class ConanXqilla(ConanFile):
         self.requires("libxsd-frontend/2.1.0")
         
     def build_requirements(self):
-        self.tool_requires("cmake/[>3 <4]")
+        self.tool_requires("cmake/[>=3.31]")
 
     def package_id(self):
         del self.info.settings.compiler
@@ -95,6 +94,10 @@ class ConanXqilla(ConanFile):
 
     def layout(self):
         cmake_layout(self, src_folder="src")
+        
+    def _read_copyright_text(self):
+        with open(os.path.join(self.source_folder, "LICENSE"), "r") as f:
+            return f.readline()            
 
     def generate(self):
         toolchain = CMakeToolchain(self)
@@ -108,8 +111,13 @@ class ConanXqilla(ConanFile):
             toolchain.variables[f"{template}_VERSION_MAJOR"] = v.major
             toolchain.variables[f"{template}_VERSION_MINOR"] = v.minor
             toolchain.variables[f"{template}_VERSION_PATCH"] = v.patch
-        toolchain.variables["XSD_COPYRIGHT"] = "2005-2023"
-        toolchain.cache_variables["WITH_TOOLS"] = self.options.with_tools
+            toolchain.variables[f"{template}_PRE_RELEASE"] = False
+            toolchain.variables[f"{template}_SNAPSHOT"] = 0
+            toolchain.variables[f"{template}_SNAPSHOT_ID"] = ""
+        toolchain.variables["XSD_COPYRIGHT"] = self._read_copyright_text().replace("Copyright (c) ", "").replace(".","").rstrip()
+        self.output.info(f"package_type: {self.package_type}")
+        toolchain.cache_variables["BUILD_TOOLS"] = self.package_type == "application"
+        toolchain.cache_variables["COLLECT_HEADERS"] = self.package_type == "header-library"
         toolchain.generate()
 
         deps = CMakeDeps(self)
@@ -131,7 +139,7 @@ class ConanXqilla(ConanFile):
     def package_info(self):
         self.cpp_info.libdirs = []
         self.cpp_info.includedirs = []
-        if self.options.with_tools:
+        if self.package_type == "application":
             self.cpp_info.bindirs = ["bin"]
             
         # header component

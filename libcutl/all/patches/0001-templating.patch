@@ -9,9 +9,9 @@ index 1edede7..a4c1e28 100644
 -#define LIBCUTL_VERSION       $libcutl.version.project_number$ULL
 -#define LIBCUTL_VERSION_STR   "$libcutl.version.project$"
 -#define LIBCUTL_VERSION_ID    "$libcutl.version.project_id$"
-+#cmakedefine LIBCUTL_VERSION       @LIBCUTL_VERSION@
-+#cmakedefine LIBCUTL_VERSION_STR   "@LIBCUTL_VERSION_STR@"
-+#cmakedefine LIBCUTL_VERSION_ID    "@LIBCUTL_VERSION_ID@"
++#define LIBCUTL_VERSION       ${LIBCUTL_VERSION}ULL
++#define LIBCUTL_VERSION_STR   "${LIBCUTL_VERSION_STR}"
++#define LIBCUTL_VERSION_ID    "${LIBCUTL_VERSION_ID}"
 
 -#define LIBCUTL_VERSION_MAJOR $libcutl.version.major$
 -#define LIBCUTL_VERSION_MINOR $libcutl.version.minor$
@@ -21,11 +21,11 @@ index 1edede7..a4c1e28 100644
 +#define LIBCUTL_VERSION_PATCH ${LIBCUTL_VERSION_PATCH}
 
 -#define LIBCUTL_PRE_RELEASE   $libcutl.version.pre_release$
-+#cmakedefine LIBCUTL_PRE_RELEASE   @LIBCUTL_PRE_RELEASE@
++#define LIBCUTL_PRE_RELEASE   ${LIBCUTL_PRE_RELEASE}
 
 -#define LIBCUTL_SNAPSHOT      $libcutl.version.snapshot_sn$ULL
 -#define LIBCUTL_SNAPSHOT_ID   "$libcutl.version.snapshot_id$"
-+#cmakedefine LIBCUTL_SNAPSHOT      @LIBCUTL_SNAPSHOT@
-+#cmakedefine LIBCUTL_SNAPSHOT_ID   "@LIBCUTL_SNAPSHOT_ID@"
++#define LIBCUTL_SNAPSHOT      ${LIBCUTL_SNAPSHOT}ULL
++#define LIBCUTL_SNAPSHOT_ID   "${LIBCUTL_SNAPSHOT_ID}"
 
  #endif // LIBCUTL_VERSION

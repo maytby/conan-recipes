@@ -8,8 +8,6 @@ from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
 from conan.tools.scm import Git
 import re
 
-required_conan_version = ">=1.52.0"
-
 
 def encode_version(version_str):
     # Parse version: major.minor.patch(-pre)
@@ -67,7 +65,7 @@ class ConanLIBXSD(ConanFile):
         self.requires("libcutl/[>=1.11.0]")
         
     def build_requirements(self):
-        self.tool_requires("cmake/[>3.31 <4]")
+        self.tool_requires("cmake/[>=3.31]")
 
     def package_id(self):
         del self.info.settings.compiler
@@ -101,6 +99,9 @@ class ConanLIBXSD(ConanFile):
         toolchain.variables["LIBXSD_FRONTEND_VERSION_MAJOR"] = v.major
         toolchain.variables["LIBXSD_FRONTEND_VERSION_MINOR"] = v.minor
         toolchain.variables["LIBXSD_FRONTEND_VERSION_PATCH"] = v.patch
+        toolchain.variables[f"LIBXSD_FRONTEND_PRE_RELEASE"] = False
+        toolchain.variables[f"LIBXSD_FRONTEND_SNAPSHOT"] = 0
+        toolchain.variables[f"LIBXSD_FRONTEND_SNAPSHOT_ID"] = ""
         toolchain.generate()
 
         deps = CMakeDeps(self)

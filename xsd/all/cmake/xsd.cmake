@@ -14,6 +14,13 @@ file(GLOB_RECURSE HDRS_LIBXSD
 )
 
 if(BUILD_TOOLS)
+
+        message("Generate xsd from sources at ${XSD_PATH}")
+        
+        find_package(XercesC CONFIG REQUIRED)
+        find_package(libcutl CONFIG REQUIRED)
+        find_package(libxsd-frontend CONFIG REQUIRED)
+
         # cop pregenerated stuff to actual build
         file(COPY ${XSD_PATH}/xsd/xsd/pregenerated/xsd DESTINATION ${XSD_PATH}/xsd/)
         file(REMOVE_RECURSE ${XSD_PATH}/xsd/xsd/pregenerated/)

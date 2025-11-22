@@ -99,7 +99,7 @@ class ConanLIBXSD(ConanFile):
         toolchain.variables["LIBXSD_FRONTEND_VERSION_MAJOR"] = v.major
         toolchain.variables["LIBXSD_FRONTEND_VERSION_MINOR"] = v.minor
         toolchain.variables["LIBXSD_FRONTEND_VERSION_PATCH"] = v.patch
-        toolchain.variables[f"LIBXSD_FRONTEND_PRE_RELEASE"] = False
+        toolchain.variables[f"LIBXSD_FRONTEND_PRE_RELEASE"] = "false"
         toolchain.variables[f"LIBXSD_FRONTEND_SNAPSHOT"] = 0
         toolchain.variables[f"LIBXSD_FRONTEND_SNAPSHOT_ID"] = ""
         toolchain.generate()

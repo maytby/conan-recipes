@@ -67,9 +67,11 @@ class ConanXqilla(ConanFile):
         copy(self, "cmake/*.cmake", self.recipe_folder, self.export_sources_folder)
 
     def requirements(self):
+        # xerces should be visible, since generated code requires it
         self.requires("xerces-c/[>=3.0.0]")
-        self.requires("libcutl/1.11.0")
-        self.requires("libxsd-frontend/2.1.0")
+        if self.package_type == "application":
+            self.requires("libcutl/1.11.0", visible=False)
+            self.requires("libxsd-frontend/2.1.0", visible=False)
         
     def build_requirements(self):
         self.tool_requires("cmake/[>=3.31]")
@@ -111,7 +113,7 @@ class ConanXqilla(ConanFile):
             toolchain.variables[f"{template}_VERSION_MAJOR"] = v.major
             toolchain.variables[f"{template}_VERSION_MINOR"] = v.minor
             toolchain.variables[f"{template}_VERSION_PATCH"] = v.patch
-            toolchain.variables[f"{template}_PRE_RELEASE"] = False
+            toolchain.variables[f"{template}_PRE_RELEASE"] = "false"
             toolchain.variables[f"{template}_SNAPSHOT"] = 0
             toolchain.variables[f"{template}_SNAPSHOT_ID"] = ""
         toolchain.variables["XSD_COPYRIGHT"] = self._read_copyright_text().replace("Copyright (c) ", "").replace(".","").rstrip()

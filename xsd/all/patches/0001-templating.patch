@@ -27,7 +27,7 @@ index 7f2e17a..782c848 100644
 
 -#define LIBXSD_SNAPSHOT      $libxsd.version.snapshot_sn$ULL
 -#define LIBXSD_SNAPSHOT_ID   "$libxsd.version.snapshot_id$"
-+#define LIBXSD_SNAPSHOT      ${LIBXSD_SNAPSHOT}
++#define LIBXSD_SNAPSHOT      ${LIBXSD_SNAPSHOT}ULL
 +#define LIBXSD_SNAPSHOT_ID   "${LIBXSD_SNAPSHOT_ID}"
 
  // Note that Xerces and Expat compatibility is verified by the respective

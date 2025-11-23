@@ -27,7 +27,7 @@ index c22ca4e..bab37ac 100644
  
 -#define LIBXSD_FRONTEND_SNAPSHOT      $libxsd_frontend.version.snapshot_sn$ULL
 -#define LIBXSD_FRONTEND_SNAPSHOT_ID   "$libxsd_frontend.version.snapshot_id$"
-+#define LIBXSD_FRONTEND_SNAPSHOT      ${LIBXSD_FRONTEND_SNAPSHOT}@ULL
++#define LIBXSD_FRONTEND_SNAPSHOT      ${LIBXSD_FRONTEND_SNAPSHOT}ULL
 +#define LIBXSD_FRONTEND_SNAPSHOT_ID   "${LIBXSD_FRONTEND_SNAPSHOT_ID}"
  
  #include <xercesc/util/XercesVersion.hpp>

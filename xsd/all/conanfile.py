@@ -70,8 +70,8 @@ class ConanXqilla(ConanFile):
         # xerces should be visible, since generated code requires it
         self.requires("xerces-c/[>=3.0.0]")
         if self.package_type == "application":
-            self.requires("libcutl/1.11.0", visible=False)
-            self.requires("libxsd-frontend/2.1.0", visible=False)
+            self.requires("libcutl/[>=1.11.0]", visible=False)
+            self.requires("libxsd-frontend/[>=2.1.0]", visible=False)
         
     def build_requirements(self):
         self.tool_requires("cmake/[>=3.31]")

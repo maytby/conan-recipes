@@ -66,14 +66,14 @@ index 9bfd8a8..b6acf0d 100644
 
  #include <xercesc/util/XercesVersion.hpp>
 
-@@ -46,10 +46,4 @@
-
+@@ -46,10 +46,6 @@
+ 
 -#include <libcutl/version.hxx>
-
+ 
 -$libcutl.check(LIBCUTL_VERSION, LIBCUTL_SNAPSHOT)$
--
+ 
 -#include <libxsd-frontend/version.hxx>
-
+ 
 -$libxsd_frontend.check(LIBXSD_FRONTEND_VERSION, LIBXSD_FRONTEND_SNAPSHOT)$
--
+ 
  #endif // XSD_VERSION

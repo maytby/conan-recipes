@@ -10,7 +10,7 @@ index 7f2e17a..782c848 100644
 -#define LIBXSD_VERSION_STR   "$libxsd.version.project$"
 -#define LIBXSD_VERSION_ID    "$libxsd.version.project_id$"
 -#define LIBXSD_VERSION_FULL  "$libxsd.version$"
-+#define LIBXSD_VERSION       ${LIBXSD_VERSION}
++#define LIBXSD_VERSION       ${LIBXSD_VERSION}ULL
 +#define LIBXSD_VERSION_STR   "${LIBXSD_VERSION_STR}"
 +#define LIBXSD_VERSION_ID    "${LIBXSD_VERSION_ID}"
 +#define LIBXSD_VERSION_FULL  "${LIBXSD_VERSION_FULL}"

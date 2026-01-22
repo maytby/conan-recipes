@@ -38,7 +38,7 @@ def encode_version(version_str):
     numeric_version = f"{combined:015d}{DDD:03d}{E}"
     return numeric_version
 
-class ConanXqilla(ConanFile):
+class ConanXsd(ConanFile):
     name = "xsd"
     description = (
         "XSD is a W3C XML Schema to C++ translator. "
@@ -51,15 +51,7 @@ class ConanXqilla(ConanFile):
     topics = ("xml", "c++")
 
     settings = "os", "arch", "compiler", "build_type"
-    
-    def configure(self):
-        self.output.info(f"context: {self.context}")
-        if self.context == "host":
-            # used as simple requirement
-            self.package_type = "header-library"
-        elif self.context == "build":
-            # e.g. via tool_requires
-            self.package_type = "application"
+    package_type = "application"
 
     def export_sources(self):
         export_conandata_patches(self)
@@ -69,15 +61,12 @@ class ConanXqilla(ConanFile):
     def requirements(self):
         # xerces should be visible, since generated code requires it
         self.requires("xerces-c/[>=3.0.0]")
-        if self.package_type == "application":
-            self.requires("libcutl/[>=1.11.0]", visible=False)
-            self.requires("libxsd-frontend/[>=2.1.0]", visible=False)
-        
+        self.requires(f"libxsd/{self.version}")
+        self.requires("libcutl/[>=1.11.0]")
+        self.requires("libxsd-frontend/[>=2.1.0]")
+    
     def build_requirements(self):
         self.tool_requires("cmake/[>=3.31]")
-
-    def package_id(self):
-        del self.info.settings.compiler
 
     def validate(self):
         if self.settings.compiler.cppstd:
@@ -117,9 +106,6 @@ class ConanXqilla(ConanFile):
             toolchain.variables[f"{template}_SNAPSHOT"] = 0
             toolchain.variables[f"{template}_SNAPSHOT_ID"] = ""
         toolchain.variables["XSD_COPYRIGHT"] = self._read_copyright_text().replace("Copyright (c) ", "").replace(".","").rstrip()
-        self.output.info(f"package_type: {self.package_type}")
-        toolchain.cache_variables["BUILD_TOOLS"] = self.package_type == "application"
-        toolchain.cache_variables["COLLECT_HEADERS"] = self.package_type == "header-library"
         toolchain.generate()
 
         deps = CMakeDeps(self)
@@ -137,12 +123,3 @@ class ConanXqilla(ConanFile):
         copy(self, "FLOSSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         cmake = CMake(self)
         cmake.install()
-
-    def package_info(self):
-        self.cpp_info.libdirs = []
-        self.cpp_info.includedirs = []
-        if self.package_type == "application":
-            self.cpp_info.bindirs = ["bin"]
-            
-        # header component
-        self.cpp_info.components["libxsd"].includedirs = ["include"]

@@ -1,20 +1,19 @@
 import os
-
-from conan import ConanFile, Version
-from conan.errors import ConanInvalidConfiguration
-from conan.tools.build import check_min_cppstd, check_max_cppstd
-from conan.tools.files import apply_conandata_patches, chdir, copy, export_conandata_patches, get, rmdir, collect_libs
-from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
-from conan.tools.scm import Git
 import re
 
+from conan import ConanFile
+from conan.tools.build import check_min_cppstd
+from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
+from conan.tools.files import apply_conandata_patches, copy, export_conandata_patches, get, collect_libs, replace_in_file
+from conan.tools.scm import Git
+from conan.tools.scm import Version  # Conan >= 2.x
 
 def encode_version(version_str):
     # Parse version: major.minor.patch(-pre)
     match = re.match(r"(\d+)\.(\d+)\.(\d+)(?:-([ab])\.(\d+)(?:\.z)?)?", version_str)
     if not match:
         raise ValueError(f"Invalid version string: {version_str}")
-
+    
     major, minor, patch, pre_type, pre_num = match.groups()
     major = int(major)
     minor = int(minor)
@@ -39,40 +38,29 @@ def encode_version(version_str):
     numeric_version = f"{combined:015d}{DDD:03d}{E}"
     return numeric_version
 
-class ConanLIBXSDFrontend(ConanFile):
-    name = "libxsd-frontend"
+class ConanLibxsd(ConanFile):
+    name = "libxsd"
     description = (
-        "libxsd-frontend is a compiler frontend for the W3C XML Schema definition language. It includes a parser, semantic graph types and a traversal mechanism."
+        "XSD is a W3C XML Schema to C++ translator. "
+        "It generates vocabulary-specific, statically-typed C++ mappings (also called bindings) from XML Schema definitions. "
+        "XSD supports two C++ mappings: in-memory C++/Tree and event-driven C++/Parser."
     )
-    license = ("GPLv2")
+    license = ("GPL-2.0", "FLOSSE")
     url = "https://github.com/maytby/conan-recipes"
-    homepage = "https://www.codesynthesis.com/projects/libxsd-frontend/"
+    homepage = "https://codesynthesis.com/projects/xsd/"
     topics = ("xml", "c++")
 
-    package_type = "library"
     settings = "os", "arch", "compiler", "build_type"
     
-    options = {"shared": [True, False], "fPIC": [True, False]}
-    default_options = {"shared": False, "fPIC": False}
+    package_type = "header-library"
 
     def export_sources(self):
         export_conandata_patches(self)
         copy(self, "CMakeLists.txt", self.recipe_folder, self.export_sources_folder)
         copy(self, "cmake/*.cmake", self.recipe_folder, self.export_sources_folder)
-
-    def requirements(self):
-        self.requires("xerces-c/[>=3.0.0]")
-        self.requires("libcutl/[>=1.11.0]")
         
     def build_requirements(self):
         self.tool_requires("cmake/[>=3.31]")
-
-    def package_id(self):
-        del self.info.settings.compiler
-
-    def validate(self):
-        if self.settings.compiler.cppstd:
-            check_min_cppstd(self, 17)
 
     def source(self):
         src = self.conan_data["sources"][self.version]
@@ -88,20 +76,25 @@ class ConanLIBXSDFrontend(ConanFile):
     def layout(self):
         cmake_layout(self, src_folder="src")
         
+    def _read_copyright_text(self):
+        with open(os.path.join(self.source_folder, "LICENSE"), "r") as f:
+            return f.readline()            
+
     def generate(self):
         toolchain = CMakeToolchain(self)
-        toolchain.variables["LIBXSD_FRONTEND_PATH"] = self.source_folder.replace("\\", "/")
+        toolchain.variables["XSD_PATH"] = self.source_folder.replace("\\", "/")
         v = Version(self.version)
-        toolchain.variables["LIBXSD_FRONTEND_VERSION"] = encode_version(self.version)
-        toolchain.variables["LIBXSD_FRONTEND_VERSION_STR"] = self.version
-        toolchain.variables["LIBXSD_FRONTEND_VERSION_ID"] = self.version
-        toolchain.variables["LIBXSD_FRONTEND_VERSION_FULL"] = self.version
-        toolchain.variables["LIBXSD_FRONTEND_VERSION_MAJOR"] = v.major
-        toolchain.variables["LIBXSD_FRONTEND_VERSION_MINOR"] = v.minor
-        toolchain.variables["LIBXSD_FRONTEND_VERSION_PATCH"] = v.patch
-        toolchain.variables[f"LIBXSD_FRONTEND_PRE_RELEASE"] = "false"
-        toolchain.variables[f"LIBXSD_FRONTEND_SNAPSHOT"] = 0
-        toolchain.variables[f"LIBXSD_FRONTEND_SNAPSHOT_ID"] = ""
+        for template in ["LIBXSD", "XSD"]:
+            toolchain.variables[f"{template}_VERSION"] = encode_version(self.version)
+            toolchain.variables[f"{template}_VERSION_STR"] = self.version
+            toolchain.variables[f"{template}_VERSION_ID"] = self.version
+            toolchain.variables[f"{template}_VERSION_FULL"] = self.version
+            toolchain.variables[f"{template}_VERSION_MAJOR"] = v.major
+            toolchain.variables[f"{template}_VERSION_MINOR"] = v.minor
+            toolchain.variables[f"{template}_VERSION_PATCH"] = v.patch
+            toolchain.variables[f"{template}_PRE_RELEASE"] = "false"
+            toolchain.variables[f"{template}_SNAPSHOT"] = 0
+            toolchain.variables[f"{template}_SNAPSHOT_ID"] = ""
         toolchain.generate()
 
         deps = CMakeDeps(self)
@@ -114,13 +107,11 @@ class ConanLIBXSDFrontend(ConanFile):
         cmake.build()
 
     def package(self):
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         copy(self, "GPLv2", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(self, "FLOSSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         cmake = CMake(self)
         cmake.install()
-
+        
     def package_info(self):
-        if self.options.shared:
-            self.cpp_info.defines.append("LIBXSD_FRONTEND_SHARED=1")
-        else:
-            self.cpp_info.defines.append("LIBXSD_FRONTEND_STATIC=1")
-        self.cpp_info.libs = collect_libs(self)
+        self.cpp_info.defines = ["XSD_CXX11"]

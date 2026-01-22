@@ -2,8 +2,10 @@
 
 conan remove "libcutl/*" -c
 conan remove "libxsd-frontend/*" -c
+conan remove "libxsd/*" -c
 conan remove "xsd/*" -c
 
 conan cache clean "libcutl/*"
 conan cache clean "libxsd-frontend/*"
+conan cache clean "libxsd/*"
 conan cache clean "xsd/*"

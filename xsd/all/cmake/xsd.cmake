@@ -8,6 +8,7 @@ message("Generate xsd from sources at ${XSD_PATH}")
 find_package(XercesC CONFIG REQUIRED)
 find_package(libcutl CONFIG REQUIRED)
 find_package(libxsd-frontend CONFIG REQUIRED)
+find_package(libxsd CONFIG REQUIRED)
 
 # cop pregenerated stuff to actual build
 file(COPY ${XSD_PATH}/xsd/xsd/pregenerated/xsd DESTINATION ${XSD_PATH}/xsd/)
@@ -16,7 +17,7 @@ file(REMOVE_RECURSE ${XSD_PATH}/xsd/xsd/pregenerated/)
 # get sources to compile
 file(GLOB_RECURSE SRCS_XSD ${XSD_PATH}/xsd/*cxx)
 
-add_executable(xsd ${SRCS_XSD} ${BUILD_HDRS_LIBXSD})
+add_executable(xsd ${SRCS_XSD})
 
 target_compile_definitions(xsd PRIVATE XSD_COPYRIGHT="${XSD_COPYRIGHT}")
 target_compile_definitions(xsd PRIVATE XSD_VERSION="${XSD_VERSION}")
@@ -25,12 +26,12 @@ target_compile_definitions(xsd PRIVATE XSD_VERSION_STR="${XSD_VERSION_STR}")
 
 target_include_directories(xsd PRIVATE
         ${XSD_PATH}/xsd
-        ${XSD_PATH}/libxsd
 )
 target_link_libraries(xsd PRIVATE
         XercesC::XercesC
         libcutl::libcutl
         libxsd-frontend::libxsd-frontend
+        libxsd::libxsd
 )
 
 install(TARGETS xsd

@@ -51,8 +51,6 @@ class ConanLibxsd(ConanFile):
     topics = ("xml", "c++")
 
     settings = "os", "arch", "compiler", "build_type"
-    
-    package_type = "header-library"
 
     def export_sources(self):
         export_conandata_patches(self)
@@ -115,3 +113,6 @@ class ConanLibxsd(ConanFile):
         
     def package_info(self):
         self.cpp_info.defines = ["XSD_CXX11"]
+        self.cpp_info.bindirs = []
+        self.cpp_info.libs = []
+        self.cpp_info.includedirs = ["include"]
